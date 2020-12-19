@@ -22,7 +22,7 @@ void insertData(struct Node* ptr,int data)
         newNode->left=NULL;
         newNode->right=NULL;
         root=newNode;
-        printf("\nelement inserted successfully");
+        
          
     }
     else if (data < ptr->data)
@@ -38,7 +38,7 @@ void insertData(struct Node* ptr,int data)
           newNode->left=NULL;
           newNode->right=NULL;
           ptr->left=newNode;
-          printf("\nelement inserted successfully in left side");
+         
         }
         
         
@@ -56,7 +56,7 @@ void insertData(struct Node* ptr,int data)
           newNode->left=NULL;
           newNode->right=NULL;
           ptr->right=newNode;
-          printf("\nelement inserted successfully in right side");
+         
         }
     }
     else
@@ -106,6 +106,64 @@ void inOrderTraversal(struct Node* tmp)
     
  }
 
+struct Node* maxNode(struct Node* tmp)
+ {
+     return tmp->left;
+ }
+
+struct Node* deleteElement(struct Node* tmp,int data)
+{
+    if(tmp==NULL)
+    {
+        return tmp;
+    }
+
+    else if(data > tmp->data)
+    {
+        tmp->right = deleteElement(tmp->right,data);
+    }
+
+    else if(data < tmp->data )
+    {
+        tmp->left = deleteElement(tmp->left,data);
+    }
+
+    else
+    {
+        if(tmp->right==NULL && tmp->left==NULL)
+        {
+            struct Node* ptr=tmp->right;
+            free(tmp);
+            return ptr;
+        }
+
+        else if(tmp->right!=NULL && tmp->left==NULL)
+        {
+            struct Node* ptr=tmp->right;
+            free(tmp);
+            return ptr;
+        }
+        
+        else if(tmp->left!=NULL && tmp->left==NULL)
+        {
+           struct Node* ptr=tmp->left;
+            free(tmp);
+            return ptr;
+        }
+
+        else
+        {
+            struct Node* newNode = maxNode(tmp);
+            tmp->data=newNode->data;
+            tmp->left=deleteElement(tmp->left,newNode->data);
+        }
+        
+        
+    }
+    return tmp;
+    
+}
+
 void main()
 {
     insertData(root,5);
@@ -117,6 +175,7 @@ void main()
     insertData(root,23);
     insertData(root,203);
     insertData(root,13);
+    deleteElement(root,5);
     inOrderTraversal(root);
-    searchElement(root,0);
+    
 }
